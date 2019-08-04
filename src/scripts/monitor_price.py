@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.utils import *
 
 def run():
-	product_list	=	Product.objects.filter(Active=1).all()
+	product_list		=	Product.objects.filter(Active=1).all()
 	for product in product_list:
 		URL				=				product.URL.strip()
 		name			=				product.user_name.strip()
@@ -56,21 +56,21 @@ def check_price(URL,required_price):
 			return False
 
 def send_mail(email,URL,name,required_price):
-	body = """\
-				<html>
-				  <body>
-				    <p><b>Hi, """+name+"""</b><br><br>
-				       Your product have discount of """+str(required_price-float_price)+""" <a href="""+URL+""">click here</a> to buy your product @"""+str(float_price)+""" 
-				    </p>
-				  </body>
-				</html>
-				"""
-	msg = MIMEText(body,"html")
-	msg['To'] = formataddr(('Recipient', email))
-	msg['From'] = formataddr(('noreply@pricetracker.com', 'author@example.com'))
-	msg['Subject'] = title
+	body 				= 	"""\
+							<html>
+						  		<body>
+						    		<p><b>Hi, """+name+"""</b><br><br>
+						       			Your product have discount of """+str(required_price-float_price)+""" <a href="""+URL+""">click here</a> to buy your product @"""+str(float_price)+""" 
+						    		</p>
+						  		</body>
+							</html>
+							"""
+	msg 				= 	MIMEText(body,"html")
+	msg['To'] 			= 	formataddr(('Recipient', email))
+	msg['From'] 		= 	formataddr(('noreply@pricetracker.com', 'author@example.com'))
+	msg['Subject'] 		= 	title
 
-	server = smtplib.SMTP('smtp.gmail.com',587)
+	server 				= 	smtplib.SMTP('smtp.gmail.com',587)
 	server.starttls()
 	server.login('uptechnotricks@gmail.com','duftwvzvejtksznj')
 
