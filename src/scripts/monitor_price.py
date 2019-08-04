@@ -19,6 +19,7 @@ def run():
 			if(send_mail(email,URL,name,required_price)):
 				product.Active = 0
 				product.save()
+				print(email)
 
 
 
@@ -71,7 +72,7 @@ def send_mail(email,URL,name,required_price):
 
 	server = smtplib.SMTP('smtp.gmail.com',587)
 	server.starttls()
-	server.login('jaydhanani36.jd@gmail.com','epytrrlhlviewrzc')
+	server.login('uptechnotricks@gmail.com','duftwvzvejtksznj')
 
 	server.sendmail(msg['From'], [email], msg.as_string())
 	return True
