@@ -7,6 +7,7 @@ import smtplib,ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import *
+from datetime import datetime
 
 def run():
 	product_list		=	Product.objects.filter(Active=1).all()
@@ -17,9 +18,10 @@ def run():
 		required_price	=				float(product.Price)
 		if(check_price(URL,required_price)):
 			if(send_mail(email,URL,name,required_price)):
-				product.Active = 0
+				product.Active 	=	0
 				product.save()
-				print(email)
+				now		=	datetime.now()
+				print(email+" To "+name+" At "+now.strftime("%d/%m/%Y %H:%M:%S"))
 
 
 
