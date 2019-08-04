@@ -10,18 +10,19 @@ from email.utils import *
 from datetime import datetime
 
 def run():
-	product_list		=	Product.objects.filter(Active=1).all()
+	product_list				=	Product.objects.filter(Active=1).all()
 	for product in product_list:
 		URL				=				product.URL.strip()
-		name			=				product.user_name.strip()
-		email			=				product.Email.strip()
-		required_price	=				float(product.Price)
+		name				=				product.user_name.strip()
+		emails				=				product.Email.strip()
+		emails				=				[email.strip() for email in emails.split(",")]
+		required_price			=				float(product.Price)
 		if(check_price(URL,required_price)):
-			if(send_mail(email,URL,name,required_price)):
+			if(send_mail(emails,URL,name,required_price)):
 				product.Active 	=	0
 				product.save()
 				now		=	datetime.now()
-				print(email+" To "+name+" At "+now.strftime("%d/%m/%Y %H:%M:%S"))
+				print(", ".join(emails)+" To "+name+" At "+now.strftime("%d/%m/%Y %H:%M:%S"))
 
 
 
@@ -57,7 +58,8 @@ def check_price(URL,required_price):
 		else:
 			return False
 
-def send_mail(email,URL,name,required_price):
+def send_mail(emails,URL,name,required_price):
+	URL				+=	"&tag=jaydhanani903-21"
 	body 				= 	"""\
 							<html>
 						  		<body>
@@ -68,13 +70,13 @@ def send_mail(email,URL,name,required_price):
 							</html>
 							"""
 	msg 				= 	MIMEText(body,"html")
-	msg['To'] 			= 	formataddr(('Recipient', email))
-	msg['From'] 		= 	formataddr(('noreply@pricetracker.com', 'author@example.com'))
-	msg['Subject'] 		= 	title
+	msg['To'] 			= 	", ".join(emails)
+	msg['From'] 			= 	formataddr(('noreply@pricetracker.com', 'author@example.com'))
+	msg['Subject'] 			= 	title
 
 	server 				= 	smtplib.SMTP('smtp.gmail.com',587)
 	server.starttls()
 	server.login('uptechnotricks@gmail.com','duftwvzvejtksznj')
 
-	server.sendmail(msg['From'], [email], msg.as_string())
+	server.sendmail(msg['From'], emails, msg.as_string())
 	return True

@@ -5,7 +5,7 @@ from django.core.validators import validate_email
 class Product(models.Model):
 	ID					=	models.AutoField(primary_key=True)
 	URL					=	models.TextField(blank=False, null=False)
-	Email				=	models.CharField(max_length=120,validators=[validate_email],blank=True,null=True)
+	Email				=	models.TextField(blank=True,null=True)
 	Active				=	models.BooleanField(default=True)
 	Price				=	models.IntegerField(blank=False, null=False)
 	created_by			=	models.IntegerField(blank=True, null=True)
